@@ -33,4 +33,4 @@ jobs:
 
       - name: Run tests (group ${{ matrix.id }})
         run: |
-          uv run python -m pytest tests/test${{ matrix.id }}.py
+          uv run python -m pytest -v tests/test${{ matrix.id }}.py
