@@ -34,3 +34,26 @@ jobs:
       - name: Run tests (group ${{ matrix.id }})
         run: |
           uv run python -m pytest -v tests/test${{ matrix.id }}.py
+
+  grade:
+    name: Score
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v10.0.1
+
+      - name: Install dependencies
+        run: |
+          uv venv
+          uv pip install -r requirements.txt
+
+      - name: Compute score
+        run: |
+          uv run python grade.py --verbose

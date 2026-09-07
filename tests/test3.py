@@ -2,6 +2,15 @@
 
 from solution_floor_cleaning import Environment, FloorCleaningAgent
 
+# Weight per test for scoring (out of 20 total across all test files)
+WEIGHTS = {
+    "test_env_step_time_marks_cleaned_tiles_dirty": 1,
+    "test_agent_does_second_pass_after_time_passes": 2,
+    "test_different_tiles_soiled_at_different_times": 2,
+    "test_obstacle_tiles_never_soiled": 1,
+    "test_cleaning_after_time_soiling": 2,
+}
+
 
 def test_env_step_time_marks_cleaned_tiles_dirty():
     """After 7+ days, a cleaned tile becomes dirty again."""

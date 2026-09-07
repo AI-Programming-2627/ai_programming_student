@@ -2,6 +2,15 @@
 
 from solution_floor_cleaning import Environment, FloorCleaningAgent
 
+# Weight per test for scoring (out of 20 total across all test files)
+WEIGHTS = {
+    "test_agent_initialization": 1,
+    "test_single_tile_clean": 1,
+    "test_move_right": 1,
+    "test_move_blocked_by_wall": 1,
+    "test_clean_entire_room": 3,
+}
+
 
 def test_agent_initialization():
     """Verify the agent starts at (0,0) with a correct internal model."""

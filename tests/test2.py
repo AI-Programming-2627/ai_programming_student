@@ -2,6 +2,14 @@
 
 from solution_floor_cleaning import Environment, FloorCleaningAgent
 
+# Weight per test for scoring (out of 20 total across all test files)
+WEIGHTS = {
+    "test_bumper_detects_obstacle": 1,
+    "test_agent_goes_around_single_obstacle": 2,
+    "test_agent_cleans_room_with_obstacles": 3,
+    "test_obstacle_tile_never_cleaned": 1,
+}
+
 
 def test_bumper_detects_obstacle():
     """Bumper sensor detects obstacles placed in the environment."""
