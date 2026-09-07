@@ -6,7 +6,18 @@ on:
 
 jobs:
   test:
+    name: test${{ matrix.id }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - id: 1
+            test-keys: "test_add"
+          - id: 2
+            test-keys: "test_subtract or test_multiply"
+          - id: 3
+            test-keys: "test_divide"
 
     steps:
       - uses: actions/checkout@v7
@@ -23,6 +34,6 @@ jobs:
           uv venv
           uv pip install -r requirements.txt
 
-      - name: Run tests
+      - name: Run tests (group ${{ matrix.id }})
         run: |
-          uv run python -m pytest
+          uv run python -m pytest tests/ -k "${{ matrix.test-keys }}"
