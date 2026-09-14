@@ -100,16 +100,16 @@ class FloorCleaningAgent:
         return self.env.is_blocked(nx, ny)
 
     def move_up(self):
-        raise NotImplementedError("Implement in Week 04")
+        pass
 
     def move_down(self):
-        raise NotImplementedError("Implement in Week 04")
+        pass
 
     def move_left(self):
-        raise NotImplementedError("Implement in Week 04")
+        pass
 
     def move_right(self):
-        raise NotImplementedError("Implement in Week 04")
+        pass
 
     def sense_dirt(self):
         return self.env.is_dirty(self.x, self.y)
@@ -126,7 +126,6 @@ class FloorCleaningAgent:
             self.model[self.y][self.x] = 'dirty'
         else:
             self.model[self.y][self.x] = 'clean'
-        # Check bump sensors for each direction
         for direction in self.DIR_VECTORS:
             if self.sense_bump(direction):
                 dx, dy = self.DIR_VECTORS[direction]
@@ -136,4 +135,4 @@ class FloorCleaningAgent:
 
     def clean(self):
         """Main cleaning routine: zigzag sweep of the entire room."""
-        raise NotImplementedError("Implement in Week 04")
+        pass

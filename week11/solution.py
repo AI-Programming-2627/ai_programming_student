@@ -130,36 +130,16 @@ class FloorCleaningAgent:
         return self.env.is_blocked(nx, ny)
 
     def move_up(self):
-        if not self.sense_bump('up'):
-            self.y -= 1
-            self.visited[self.y][self.x] = True
-            self.time += 1
-            return True
-        return False
+        pass
 
     def move_down(self):
-        if not self.sense_bump('down'):
-            self.y += 1
-            self.visited[self.y][self.x] = True
-            self.time += 1
-            return True
-        return False
+        pass
 
     def move_left(self):
-        if not self.sense_bump('left'):
-            self.x -= 1
-            self.visited[self.y][self.x] = True
-            self.time += 1
-            return True
-        return False
+        pass
 
     def move_right(self):
-        if not self.sense_bump('right'):
-            self.x += 1
-            self.visited[self.y][self.x] = True
-            self.time += 1
-            return True
-        return False
+        pass
 
     def sense_dirt(self):
         return self.env.is_dirty(self.x, self.y)
@@ -184,12 +164,11 @@ class FloorCleaningAgent:
                     self.model[ny][nx] = 'obstacle'
 
     def _bfs(self, start_x, start_y, target_x, target_y):
-        raise NotImplementedError("Implement in Week 11")
+        pass
 
     def _navigate_to(self, target_x, target_y):
-        raise NotImplementedError("Implement in Week 11")
+        pass
 
     def clean(self):
         """Main cleaning routine: full sweep with obstacle avoidance."""
-        raise NotImplementedError("Implement in Week 11")
-
+        pass

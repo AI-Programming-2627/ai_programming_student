@@ -34,17 +34,17 @@ class Environment:
 
     def clean(self, x, y):
         """Clean the tile at (x, y), marking it as not dirty."""
-        raise NotImplementedError("Implement in Week 03")
+        pass
 
     def set_charger(self, x, y):
         """Place the charging station at (x, y)."""
-        raise NotImplementedError("Implement in Week 03")
+        pass
 
     def count_dirty_tiles(self):
-        raise NotImplementedError("Implement in Week 03")
+        pass
 
     def count_reachable_tiles(self):
-        raise NotImplementedError("Implement in Week 03")
+        pass
 
 
 class FloorCleaningAgent:
@@ -71,37 +71,37 @@ class FloorCleaningAgent:
                              for _ in range(environment.height)]
 
     def get_position(self):
-        raise NotImplementedError("Implement in Week 03")
+        pass
 
     def get_model_cell(self, x, y):
-        raise NotImplementedError("Implement in Week 03")
+        pass
 
     def get_visited_count(self):
-        raise NotImplementedError("Implement in Week 03")
+        pass
 
     def sense_bump(self, direction):
-        raise NotImplementedError("Implement in Week 03")
+        pass
 
     def move_up(self):
-        raise NotImplementedError("Implement in Week 03")
+        pass
 
     def move_down(self):
-        raise NotImplementedError("Implement in Week 03")
+        pass
 
     def move_left(self):
-        raise NotImplementedError("Implement in Week 03")
+        pass
 
     def move_right(self):
-        raise NotImplementedError("Implement in Week 03")
+        pass
 
     def sense_dirt(self):
         """Return True if the current tile is dirty."""
-        raise NotImplementedError("Implement in Week 03")
+        pass
 
     def clean_tile(self):
         """Clean the current tile. Returns True if something was cleaned."""
-        raise NotImplementedError("Implement in Week 03")
+        pass
 
     def update_model(self):
         """Update the internal model based on current sensor readings."""
-        raise NotImplementedError("Implement in Week 03")
+        pass

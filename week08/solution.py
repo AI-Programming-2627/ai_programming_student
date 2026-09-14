@@ -105,16 +105,16 @@ class FloorCleaningAgent:
         return self.env.is_blocked(nx, ny)
 
     def move_up(self):
-        raise NotImplementedError("Implement in Week 08")
+        pass
 
     def move_down(self):
-        raise NotImplementedError("Implement in Week 08")
+        pass
 
     def move_left(self):
-        raise NotImplementedError("Implement in Week 08")
+        pass
 
     def move_right(self):
-        raise NotImplementedError("Implement in Week 08")
+        pass
 
     def sense_dirt(self):
         return self.env.is_dirty(self.x, self.y)
@@ -144,11 +144,11 @@ class FloorCleaningAgent:
         Returns a list of (x, y) steps from start to target (excluding start),
         or None if no path exists.
         """
-        raise NotImplementedError("Implement in Week 08")
+        pass
 
     def _navigate_to(self, target_x, target_y):
         """Navigate to (target_x, target_y) using BFS."""
-        raise NotImplementedError("Implement in Week 08")
+        pass
 
     def clean(self):
-        raise NotImplementedError("Implement in Week 08")
+        pass

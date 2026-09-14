@@ -34,7 +34,7 @@ class Environment:
 
     def add_obstacle(self, x, y):
         """Place an obstacle at (x, y)."""
-        raise NotImplementedError("Implement in Week 05")
+        pass
 
     def clean(self, x, y):
         if self._in_bounds(x, y):
@@ -104,16 +104,16 @@ class FloorCleaningAgent:
         return self.env.is_blocked(nx, ny)
 
     def move_up(self):
-        raise NotImplementedError("Implement in Week 05")
+        pass
 
     def move_down(self):
-        raise NotImplementedError("Implement in Week 05")
+        pass
 
     def move_left(self):
-        raise NotImplementedError("Implement in Week 05")
+        pass
 
     def move_right(self):
-        raise NotImplementedError("Implement in Week 05")
+        pass
 
     def sense_dirt(self):
         return self.env.is_dirty(self.x, self.y)
@@ -127,7 +127,7 @@ class FloorCleaningAgent:
 
     def update_model(self):
         """Update the internal model based on sensor readings."""
-        raise NotImplementedError("Implement in Week 05")
+        pass
 
     def clean(self):
-        raise NotImplementedError("Implement in Week 05")
+        pass

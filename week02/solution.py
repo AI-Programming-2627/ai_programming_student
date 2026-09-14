@@ -33,10 +33,10 @@ class Environment:
         return self.obstacles[y][x]
 
     def count_dirty_tiles(self):
-        raise NotImplementedError("Implement in Week 02")
+        pass
 
     def count_reachable_tiles(self):
-        raise NotImplementedError("Implement in Week 02")
+        pass
 
 
 class FloorCleaningAgent:
@@ -61,33 +61,33 @@ class FloorCleaningAgent:
         self.visited[start_y][start_x] = True
 
     def get_position(self):
-        raise NotImplementedError("Implement in Week 02")
+        pass
 
     def get_model_cell(self, x, y):
-        raise NotImplementedError("Implement in Week 02")
+        pass
 
     def get_visited_count(self):
-        raise NotImplementedError("Implement in Week 02")
+        pass
 
     def sense_bump(self, direction):
         """
         Bumper sensor. Returns True if there is a wall or obstacle
         in the given direction from the agent's current position.
         """
-        raise NotImplementedError("Implement in Week 02")
+        pass
 
     def move_up(self):
         """Move one tile up. Returns True on success, False if blocked."""
-        raise NotImplementedError("Implement in Week 02")
+        pass
 
     def move_down(self):
         """Move one tile down. Returns True on success, False if blocked."""
-        raise NotImplementedError("Implement in Week 02")
+        pass
 
     def move_left(self):
         """Move one tile left. Returns True on success, False if blocked."""
-        raise NotImplementedError("Implement in Week 02")
+        pass
 
     def move_right(self):
         """Move one tile right. Returns True on success, False if blocked."""
-        raise NotImplementedError("Implement in Week 02")
+        pass

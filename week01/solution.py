@@ -38,11 +38,11 @@ class Environment:
 
     def count_dirty_tiles(self):
         """Return the number of dirty tiles (excluding obstacles)."""
-        raise NotImplementedError("Implement in Week 01")
+        pass
 
     def count_reachable_tiles(self):
         """Return the number of non-obstacle tiles."""
-        raise NotImplementedError("Implement in Week 01")
+        pass
 
 
 class FloorCleaningAgent:
@@ -54,7 +54,6 @@ class FloorCleaningAgent:
         self.env = environment
         self.x = start_x
         self.y = start_y
-        # Internal model: what the agent *believes* about each tile
         self.model = [['unknown' for _ in range(environment.width)]
                       for _ in range(environment.height)]
         self.model[start_y][start_x] = 'charging_station'
@@ -64,12 +63,12 @@ class FloorCleaningAgent:
 
     def get_position(self):
         """Return the current (x, y) position."""
-        raise NotImplementedError("Implement in Week 01")
+        pass
 
     def get_model_cell(self, x, y):
         """Return what the agent believes about tile (x, y)."""
-        raise NotImplementedError("Implement in Week 01")
+        pass
 
     def get_visited_count(self):
         """Return the number of tiles the agent has visited."""
-        raise NotImplementedError("Implement in Week 01")
+        pass

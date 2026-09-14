@@ -115,16 +115,16 @@ class FloorCleaningAgent:
         return self.env.is_blocked(nx, ny)
 
     def move_up(self):
-        raise NotImplementedError("Implement in Week 10")
+        pass
 
     def move_down(self):
-        raise NotImplementedError("Implement in Week 10")
+        pass
 
     def move_left(self):
-        raise NotImplementedError("Implement in Week 10")
+        pass
 
     def move_right(self):
-        raise NotImplementedError("Implement in Week 10")
+        pass
 
     def sense_dirt(self):
         return self.env.is_dirty(self.x, self.y)
@@ -149,11 +149,11 @@ class FloorCleaningAgent:
                     self.model[ny][nx] = 'obstacle'
 
     def _bfs(self, start_x, start_y, target_x, target_y):
-        raise NotImplementedError("Implement in Week 10")
+        pass
 
     def _navigate_to(self, target_x, target_y):
-        raise NotImplementedError("Implement in Week 10")
+        pass
 
     def clean(self):
         """Main cleaning routine. Performs a zigzag sweep of all tiles."""
-        raise NotImplementedError("Implement in Week 10")
+        pass
