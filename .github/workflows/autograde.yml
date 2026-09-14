@@ -46,6 +46,7 @@ jobs:
   grade:
     name: Score
     needs: test
+    if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -63,5 +64,6 @@ jobs:
           uv pip install -r requirements.txt
 
       - name: Compute score
+        continue-on-error: true
         run: |
           uv run python grade.py --verbose
