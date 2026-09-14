@@ -1,0 +1,5 @@
+Bekijk @/oefeningenplan.md , wat beschrijf welke oefeningen er elke week ongeveer zijn voorzien.
+
+ik zou willen dat je de cursustekst zoals die nu is voorzien goed bekijkt en in die chronologie, in de map @oefeningen-ai-assisted per week netjes een opgave maakt, en gestructureerd in het begin een stappenplan geeft om naar die oplossing toe te werken. de opgaves zitten ook in deze repo, die mag je eventueel verfijnen, maar de oplossing mag zeker niet ingewikkelder worden dan er staat.
+
+Doe dit week per week op basis van het document. de bedoeling is om meer scaffolding te voorzien voor de student, maar ook om in de loop van het semester deze scaffolding weg te nemen zodat de student zelfstandiger meer code kan schrijven, zonder te moeten starten van een startbestand met al een groot deel van, de code. Begin hier al eens mee voor week 1

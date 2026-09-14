@@ -14,41 +14,41 @@ van de omgeving op via sensoren (vuil-detectie, bumper) en werkt dit continu bij
 ├── grade.py                           # Score calculator (dynamisch, alle weken)
 ├── requirements.txt                   # pytest
 ├── README.md                          # Dit bestand
+├── exercises/
+│   ├── week01/                       # Week 1:  Environment + Agent init
+│   │   ├── solution.py              #   Placeholder — implementeer zelf
+│   │   └── test_week01.py           #   5 tests, 5 pt
+│   ├── week02/                       # Week 2:  Movement (4 richtingen + muren)
+│   │   ├── solution.py
+│   │   └── test_week02.py           #   6 tests, 6 pt
+│   ├── week03/                       # Week 3:  Cleaning (dirt sensor, clean_tile)
+│   │   ├── solution.py
+│   │   └── test_week03.py           #   4 tests, 4 pt
+│   ├── week04/                       # Week 4:  Empty room sweep (zigzag)
+│   │   ├── solution.py
+│   │   └── test_week04.py           #   4 tests, 5 pt
+│   ├── week05/                       # Week 5:  Bumper sensor + obstacle model
+│   │   ├── solution.py
+│   │   └── test_week05.py           #   4 tests, 4 pt
+│   ├── week06/                       # Week 6:  Navigate around single obstacle
+│   │   ├── solution.py
+│   │   └── test_week06.py           #   3 tests, 4 pt
+│   ├── week07/                       # Week 7:  Multiple obstacles
+│   │   ├── solution.py
+│   │   └── test_week07.py           #   4 tests, 5 pt
+│   ├── week08/                       # Week 8:  BFS pathfinding
+│   │   ├── solution.py
+│   │   └── test_week08.py           #   3 tests, 5 pt
+│   ├── week09/                       # Week 9:  Time-based soiling (step_time)
+│   │   ├── solution.py
+│   │   └── test_week09.py           #   4 tests, 6 pt
+│   ├── week10/                       # Week 10: Multi-pass cleaning
+│   │   ├── solution.py
+│   │   └── test_week10.py           #   4 tests, 6 pt
+│   └── week11/                       # Week 11: Full solution (alles gecombineerd)
+│       ├── solution.py
+│       └── test_week11.py           #   3 tests, 9 pt
 │
-├── week01/                            # Week 1:  Environment + Agent init
-│   ├── solution.py                    #   Placeholder — implementeer zelf
-│   └── test_week01.py                 #   5 tests, 5 pt
-├── week02/                            # Week 2:  Movement (4 richtingen + muren)
-│   ├── solution.py
-│   └── test_week02.py                 #   6 tests, 6 pt
-├── week03/                            # Week 3:  Cleaning (dirt sensor, clean_tile)
-│   ├── solution.py
-│   └── test_week03.py                 #   4 tests, 4 pt
-├── week04/                            # Week 4:  Empty room sweep (zigzag)
-│   ├── solution.py
-│   └── test_week04.py                 #   4 tests, 5 pt
-├── week05/                            # Week 5:  Bumper sensor + obstacle model
-│   ├── solution.py
-│   └── test_week05.py                 #   4 tests, 4 pt
-├── week06/                            # Week 6:  Navigate around single obstacle
-│   ├── solution.py
-│   └── test_week06.py                 #   3 tests, 4 pt
-├── week07/                            # Week 7:  Multiple obstacles
-│   ├── solution.py
-│   └── test_week07.py                 #   4 tests, 5 pt
-├── week08/                            # Week 8:  BFS pathfinding
-│   ├── solution.py
-│   └── test_week08.py                 #   3 tests, 5 pt
-├── week09/                            # Week 9:  Time-based soiling (step_time)
-│   ├── solution.py
-│   └── test_week09.py                 #   4 tests, 6 pt
-├── week10/                            # Week 10: Multi-pass cleaning
-│   ├── solution.py
-│   └── test_week10.py                 #   4 tests, 6 pt
-└── week11/                            # Week 11: Full solution (alles gecombineerd)
-    ├── solution.py
-    └── test_week11.py                 #   3 tests, 9 pt
-
 Totaal: 44 tests, 59 punten
 ```
 
@@ -99,13 +99,13 @@ WEIGHTS = {
 
 ```bash
 # Alle testen (alle weken)
-uv run python -m pytest week*/test_week*.py -v
+uv run python -m pytest exercises/week*/test_week*.py -v
 
 # Eén week
-uv run python -m pytest week03/test_week03.py -v
+uv run python -m pytest exercises/week03/test_week03.py -v
 
 # Eén specifieke test
-uv run python -m pytest week03/test_week03.py::test_agent_clean_tile -v
+uv run python -m pytest exercises/week03/test_week03.py::test_agent_clean_tile -v
 ```
 
 ### Score berekenen
@@ -145,11 +145,11 @@ uv run python grade.py --verbose
 Bij elke `push` of `pull_request` worden **12 jobs** gestart:
 
 ```
-test01  ✅  pytest week01/test_week01.py  (5 pt)
-test02  ✅  pytest week02/test_week02.py  (6 pt)
-test03  ✅  pytest week03/test_week03.py  (4 pt)
+test01  ✅  pytest exercises/week01/test_week01.py  (5 pt)
+test02  ✅  pytest exercises/week02/test_week02.py  (6 pt)
+test03  ✅  pytest exercises/week03/test_week03.py  (4 pt)
 ...
-test11  ✅  pytest week11/test_week11.py  (9 pt)
+test11  ✅  pytest exercises/week11/test_week11.py  (9 pt)
 Score   ✅  grade.py --verbose            (35/59 = 59.3%)
 ```
 
@@ -168,9 +168,9 @@ met een per-week progressieoverzicht.
 uv venv
 uv pip install -r requirements.txt
 
-# 3. Begin met week 01 — implementeer de stubs in week01/solution.py
+# 3. Begin met week 01 — implementeer de stubs in exercises/week01/solution.py
 # 4. Test je implementatie
-uv run python -m pytest week01/test_week01.py -v
+uv run python -m pytest exercises/week01/test_week01.py -v
 
 # 5. Ga verder naar week 02, 03, ...
 # 6. Bereken de totale score

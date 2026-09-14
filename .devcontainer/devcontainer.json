@@ -1,0 +1,26 @@
+{
+  "name": "AI Programming",
+  "image": "ghcr.io/astral-sh/uv:python3.13-trixie", //uv package manager is built on top of debian slim and has python3.13 installed, it also has uv package manager preinstalled
+  "remoteEnv": {
+    "VIRTUAL_ENV": "/opt/venv",
+    "PATH": "/opt/venv/bin:${containerEnv:PATH}",
+    "UV_PROJECT_ENVIRONMENT": "/opt/venv" // creates a virtual environment
+  },
+  // mounts are needed to make ssh keys available with correct permissions
+  "mounts": [
+    "source=${localEnv:USERPROFILE}/.ssh,target=/root/.ssh,type=bind,consistency=cached" 
+  ],
+  "updateContentCommand": "uv sync",
+  // git is installed, the git config files reed the right permissions to work with ssh keys
+  "postCreateCommand": "apt-get update && apt-get install -y git && chmod 600 /root/.ssh/config /root/.ssh/id_* && chmod 644 /root/.ssh/*.pub /root/.ssh/known_hosts*",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-toolsai.jupyter", // notebooks
+        "charliermarsh.ruff", // linter
+        "GitHub.vscode-pull-request-github" // github pull requests
+      ]
+    }
+  }
+}
