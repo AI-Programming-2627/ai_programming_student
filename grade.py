@@ -1,50 +1,52 @@
 """
 Grade Calculator
 
-Runs all test files, collects results, and computes a weighted score
-based on the WEIGHTS defined in each test file.
+Dynamically discovers all week*/test_week*.py files, runs all tests,
+collects results, and computes a weighted score with per-week breakdowns.
 
 Usage:
     uv run python grade.py
     uv run python grade.py --verbose   # show per-test details
 """
 import argparse
+import glob
+import importlib.util
 import os
 import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-# Import weights from each test file
-from tests.test1 import WEIGHTS as WEIGHTS_1
-from tests.test2 import WEIGHTS as WEIGHTS_2
-from tests.test3 import WEIGHTS as WEIGHTS_3
 
-# Combine all weights
-ALL_WEIGHTS = {}
-ALL_WEIGHTS.update(WEIGHTS_1)
-ALL_WEIGHTS.update(WEIGHTS_2)
-ALL_WEIGHTS.update(WEIGHTS_3)
+def discover_weeks():
+    """Discover all week directories with test files.
 
-# Group by test file for display
-WEIGHTS_BY_FILE = {
-    "test1": WEIGHTS_1,
-    "test2": WEIGHTS_2,
-    "test3": WEIGHTS_3,
-}
+    Returns a list of (week_label, test_file_path, weights_dict) sorted by week number.
+    """
+    test_files = sorted(glob.glob("week*/test_week*.py"))
+    weeks = []
 
-# Test file paths (relative to repo root)
-TEST_FILES = [
-    "tests/test1.py",
-    "tests/test2.py",
-    "tests/test3.py",
-]
+    for test_path in test_files:
+        # Extract week label from path, e.g. "week01/test_week01.py" -> "week01"
+        week_label = Path(test_path).parent.name
+
+        # Import weights dynamically
+        module_name = test_path.replace(os.sep, ".").replace(".py", "")
+        spec = importlib.util.spec_from_file_location(module_name, test_path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+
+        weights = getattr(module, "WEIGHTS", {})
+        weeks.append((week_label, test_path, weights))
+
+    return weeks
 
 
 def run_tests(junit_xml_path=".pytest_grades.xml"):
     """Run all tests with JUnit XML output and return the exit code."""
     import pytest
 
-    args = ["-v", "--tb=short", f"--junitxml={junit_xml_path}"] + TEST_FILES
+    test_files = sorted(glob.glob("week*/test_week*.py"))
+    args = ["-v", "--tb=short", f"--junitxml={junit_xml_path}"] + test_files
     return pytest.main(args)
 
 
@@ -64,16 +66,21 @@ def parse_results(xml_path):
     return results
 
 
-def compute_score(results):
+def compute_score(results, weeks):
     """Compute the weighted score from test results.
 
-    Returns (earned_points, total_points, grade_percent, details).
+    Returns (earned_points, total_points, grade_percent, week_details, all_details).
     """
-    total_points = sum(ALL_WEIGHTS.values())
-    earned_points = 0
-    details = []
+    # Build a mapping of test_name -> weight from all weeks
+    all_weights = {}
+    for week_label, test_path, weights in weeks:
+        all_weights.update(weights)
 
-    for test_name, weight in ALL_WEIGHTS.items():
+    total_points = sum(all_weights.values())
+    earned_points = 0
+    all_details = []
+
+    for test_name, weight in all_weights.items():
         passed = results.get(test_name, False)
         if passed:
             earned_points += weight
@@ -81,54 +88,102 @@ def compute_score(results):
         else:
             status = "FAIL"
 
-        details.append((test_name, weight, status, passed))
+        all_details.append((test_name, weight, status, passed))
 
     grade_percent = (earned_points / total_points) * 100 if total_points > 0 else 0
-    return earned_points, total_points, grade_percent, details
+
+    # Per-week breakdown
+    week_details = []
+    for week_label, test_path, weights in weeks:
+        week_earned = sum(
+            w for tn, w in weights.items() if results.get(tn, False)
+        )
+        week_total = sum(weights.values())
+        week_pct = (week_earned / week_total * 100) if week_total > 0 else 0
+        week_details.append((week_label, week_earned, week_total, week_pct))
+
+    return earned_points, total_points, grade_percent, week_details, all_details
 
 
-def print_report(earned, total, percent, details, results, verbose=False):
-    """Print a formatted grade report."""
-    print("=" * 60)
-    print("  FLOOR CLEANING AGENT - GRADE REPORT")
-    print("=" * 60)
+def build_progress_bar(percent, width=20):
+    """Build a simple ASCII progress bar."""
+    filled = int(percent / 100 * width)
+    bar = "█" * filled + "░" * (width - filled)
+    return bar
 
+
+def print_report(earned, total, percent, week_details, all_details, results, weeks, verbose=False):
+    """Print a formatted grade report with per-week breakdowns."""
+    print("=" * 72)
+    print("  FLOOR CLEANING AGENT — WEEKLY PROGRESS REPORT")
+    print("=" * 72)
+
+    # ── Per-week summary ──────────────────────────────────────────
+    print()
+    print("  WEEK          SCORE       PROGRESS")
+    print("  ─────────────────────────────────────────────────────")
+    for week_label, week_earned, week_total, week_pct in week_details:
+        bar = build_progress_bar(week_pct)
+        print(f"  {week_label}    {week_earned:2d}/{week_total:<2d} pts  {bar} {week_pct:5.1f}%")
+
+    print("  ─────────────────────────────────────────────────────")
+
+    # ── Total ─────────────────────────────────────────────────────
+    total_bar = build_progress_bar(percent)
+    print(f"  TOTAAL    {earned:3d}/{total:<2d} pts  {total_bar} {percent:5.1f}%")
+
+    # ── Per-test details (verbose) ────────────────────────────────
     if verbose:
         print()
-        for test_name, weight, status, _ in details:
-            icon = "[PASS]" if status == "PASS" else "[FAIL]"
-            print(f"  {icon} {test_name:<55s} {weight:>2d}pt  {status}")
-    else:
-        for file_label, file_weights in WEIGHTS_BY_FILE.items():
-            file_earned = sum(
-                w for tn, w in file_weights.items() if results.get(tn, False)
-            )
-            file_total = sum(file_weights.values())
-            print(f"\n  {file_label}.py:  {file_earned}/{file_total} pts")
+        print("─" * 72)
+        print("  DETAILED TEST RESULTS")
+        print("─" * 72)
 
+        # Group details by week for the verbose output
+        week_weights_map = {}
+        for week_label, test_path, weights in weeks:
+            week_weights_map[week_label] = weights
+
+        for week_label, week_earned, week_total, week_pct in week_details:
+            print(f"\n  ── {week_label} ──")
+            week_weights = week_weights_map.get(week_label, {})
+            for test_name, weight, status, _ in all_details:
+                if test_name in week_weights:
+                    icon = "[PASS]" if status == "PASS" else "[FAIL]"
+                    print(f"    {icon} {test_name:<55s} {weight:>2d}pt  {status}")
+
+    # ── Legend ────────────────────────────────────────────────────
     print()
-    print("-" * 60)
-    print(f"  TOTAAL:  {earned:3d} / {total}  ({percent:.1f}%)")
-    print("=" * 60)
+    print("─" * 72)
+    print(f"  EINDCIFER:  {earned:3d} / {total}  ({percent:.1f}%)")
+    print("=" * 72)
 
     return percent, earned, total
 
 
-def write_github_summary(earned, total, percent, details):
+def write_github_summary(earned, total, percent, week_details, all_details):
     """Write the grade to the GitHub Actions step summary ($GITHUB_STEP_SUMMARY)."""
     summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
     if not summary_path:
         return
 
     lines = [
-        "## Score",
+        "## Weekly Progress Score",
         "",
         f"**{earned} / {total}**  ({percent:.1f}%)",
         "",
-        "| Test | Weight | Status |",
+        "| Week | Score | Progress |",
         "|---|---|---|",
     ]
-    for test_name, weight, status, _ in details:
+    for week_label, week_earned, week_total, week_pct in week_details:
+        bar = build_progress_bar(week_pct, width=12)
+        lines.append(f"| {week_label} | {week_earned}/{week_total} | {bar} {week_pct:.0f}% |")
+
+    lines.append("")
+    lines.append("### Per-test details")
+    lines.append("| Test | Weight | Status |")
+    lines.append("|---|---|---|")
+    for test_name, weight, status, _ in all_details:
         lines.append(f"| {test_name} | {weight} | **{status}** |")
 
     with open(summary_path, "a", encoding="utf-8") as f:
@@ -152,12 +207,15 @@ if __name__ == "__main__":
 
     results = parse_results(xml_path)
 
+    # Discover all weeks
+    weeks = discover_weeks()
+
     # Clean up temp file
     Path(xml_path).unlink(missing_ok=True)
 
-    earned, total, percent, details = compute_score(results)
-    print_report(earned, total, percent, details, results, verbose=args.verbose)
-    write_github_summary(earned, total, percent, details)
+    earned, total, percent, week_details, all_details = compute_score(results, weeks)
+    print_report(earned, total, percent, week_details, all_details, results, weeks, verbose=args.verbose)
+    write_github_summary(earned, total, percent, week_details, all_details)
 
     if exit_code != 0:
         sys.exit(1)

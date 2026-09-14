@@ -15,6 +15,14 @@ jobs:
           - id: 1
           - id: 2
           - id: 3
+          - id: 4
+          - id: 5
+          - id: 6
+          - id: 7
+          - id: 8
+          - id: 9
+          - id: 10
+          - id: 11
 
     steps:
       - uses: actions/checkout@v7
@@ -31,9 +39,9 @@ jobs:
           uv venv
           uv pip install -r requirements.txt
 
-      - name: Run tests (group ${{ matrix.id }})
+      - name: Run tests (week ${{ matrix.id }})
         run: |
-          uv run python -m pytest -v tests/test${{ matrix.id }}.py
+          uv run python -m pytest -v week$(printf "%02d" ${{ matrix.id }})/test_week$(printf "%02d" ${{ matrix.id }}).py
 
   grade:
     name: Score

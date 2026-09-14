@@ -1,4 +1,4 @@
-# Floor Cleaning Agent — Model-based Reflex Agent
+# Floor Cleaning Agent — Model-based Reflex Agent (11-Week Course)
 
 Een robotstofzuiger die een 10×5 tegels grote woonkamer systematisch schoonmaakt.
 De agent gebruikt een **model-based reflex architectuur**: hij bouwt een intern model
@@ -10,154 +10,153 @@ van de omgeving op via sensoren (vuil-detectie, bumper) en werkt dit continu bij
 
 ```
 .
-├── .github/workflows/autograde.yml   # CI/CD: 3 testjobs + score berekening
-├── solution_floor_cleaning.py         # Oplossing: Environment + FloorCleaningAgent
-├── grade.py                           # Score calculator (op basis van WEIGHTS)
+├── .github/workflows/autograde.yml   # CI/CD: 11 testjobs + score berekening
+├── grade.py                           # Score calculator (dynamisch, alle weken)
 ├── requirements.txt                   # pytest
 ├── README.md                          # Dit bestand
-└── tests/
-    ├── test1.py                       # Basis schoonmaak (lege kamer)
-    ├── test2.py                       # Obstakel detectie & navigatie
-    └── test3.py                       # Tijdsgebonden terugvuiling (7 dagen)
+│
+├── week01/                            # Week 1:  Environment + Agent init
+│   ├── solution.py                    #   Placeholder — implementeer zelf
+│   └── test_week01.py                 #   5 tests, 5 pt
+├── week02/                            # Week 2:  Movement (4 richtingen + muren)
+│   ├── solution.py
+│   └── test_week02.py                 #   6 tests, 6 pt
+├── week03/                            # Week 3:  Cleaning (dirt sensor, clean_tile)
+│   ├── solution.py
+│   └── test_week03.py                 #   4 tests, 4 pt
+├── week04/                            # Week 4:  Empty room sweep (zigzag)
+│   ├── solution.py
+│   └── test_week04.py                 #   4 tests, 5 pt
+├── week05/                            # Week 5:  Bumper sensor + obstacle model
+│   ├── solution.py
+│   └── test_week05.py                 #   4 tests, 4 pt
+├── week06/                            # Week 6:  Navigate around single obstacle
+│   ├── solution.py
+│   └── test_week06.py                 #   3 tests, 4 pt
+├── week07/                            # Week 7:  Multiple obstacles
+│   ├── solution.py
+│   └── test_week07.py                 #   4 tests, 5 pt
+├── week08/                            # Week 8:  BFS pathfinding
+│   ├── solution.py
+│   └── test_week08.py                 #   3 tests, 5 pt
+├── week09/                            # Week 9:  Time-based soiling (step_time)
+│   ├── solution.py
+│   └── test_week09.py                 #   4 tests, 6 pt
+├── week10/                            # Week 10: Multi-pass cleaning
+│   ├── solution.py
+│   └── test_week10.py                 #   4 tests, 6 pt
+└── week11/                            # Week 11: Full solution (alles gecombineerd)
+    ├── solution.py
+    └── test_week11.py                 #   3 tests, 9 pt
+
+Totaal: 44 tests, 59 punten
 ```
 
 ---
 
-## 🧠 Architectuur
+## 🧠 Architectuur (per week opgebouwd)
 
-### `Environment` — De echte wereld
+Elke week bouwt voort op de vorige. De `solution.py` in elke map bevat
+**stub-methoden** die jij moet implementeren. De bijbehorende `test_week*.py`
+testen of jouw implementatie correct is.
 
-```python
-env = Environment(width=10, height=5)
-```
+### Week-overzicht
 
-| Methode | Beschrijving |
-|---|---|
-| `is_dirty(x, y)` | Is tegel (x, y) vuil? |
-| `is_blocked(x, y)` | Wordt (x, y) geblokkeerd door een muur of obstakel? |
-| `clean(x, y)` | Maak de tegel schoon op tijdstip `env.time` |
-| `add_obstacle(x, y)` | Plaats een obstakel |
-| `set_charger(x, y)` | Plaats het laadstation (tegel is proper) |
-| `step_time(days)` | Laat de tijd `days` dagen vooruitgaan. Tegels die ≥7 dagen niet gepoetst zijn, worden opnieuw vuil. |
-| `count_dirty_tiles()` | Aantal vuile tegels (excl. obstakels) |
-| `count_reachable_tiles()` | Aantal bereikbare tegels (excl. obstakels) |
-
-### `FloorCleaningAgent` — De model-based reflex agent
-
-```python
-agent = FloorCleaningAgent(environment, start_x=0, start_y=0)
-```
-
-#### Interne state
-
-| Attribuut | Beschrijving |
-|---|---|
-| `x, y` | Huidige positie (start bij laadstation (0,0)) |
-| `model[y][x]` | Wat de agent gelooft over elke tegel: `'unknown'`, `'clean'`, `'dirty'`, `'obstacle'`, `'charging_station'` |
-| `visited[y][x]` | Of de agent de tegel al fysiek heeft bezocht |
-| `last_cleaned[y][x]` | Tijdstip waarop de agent deze tegel voor het laatst heeft schoongemaakt |
-| `time` | Interne teller van de agent |
-
-#### Sensoren
-
-| Sensor | Beschrijving |
-|---|---|
-| `sense_dirt()` | Checkt of de huidige tegel vuil is |
-| `sense_bump(direction)` | Bumper voelt of er een muur/obstakel in `direction` (`'up'`, `'down'`, `'left'`, `'right'`) staat |
-
-#### Transitiemodel
-
-```python
-agent.update_model()
-```
-
-Werkt de interne `model[][]` bij op basis van de sensorwaarden:
-- Als `sense_dirt()` → `'dirty'`, anders `'clean'` (tenzij laadstation)
-- Als `sense_bump(dir)` → de buur wordt gemarkeerd als `'obstacle'`
-
-#### Acties
-
-| Actie | Beschrijving |
-|---|---|
-| `move_up()` / `move_down()` / `move_left()` / `move_right()` | Verplaats 1 tegel (return `True` bij succes) |
-| `clean_tile()` | Maak huidige tegel schoon |
-| `stay()` | Doe niets (1 tijdseenheid) |
-
-#### Strategie
-
-De `clean()` methode gebruikt een **boustrophedon (zigzag)** patroon:
-
-1. Rij per rij: rij 0 → rechts, rij 1 → links, rij 2 → rechts, …
-2. BFS-padzoeken om rond obstakels te navigeren
-3. Na alle rijen terugkeren naar het laadstation (0,0)
+| Week | Focus | Wat je leert |
+|------|-------|-------------|
+| 01 | Environment + Agent init | Grid, dirty tiles, position tracking, model |
+| 02 | Movement | 4 richtingen, wall detection via bumper |
+| 03 | Cleaning | Dirt sensor, clean_tile(), model update |
+| 04 | Empty room sweep | Boustrophedon (zigzag) patroon |
+| 05 | Bumper sensor | Obstacle detection, model marking |
+| 06 | Single obstacle | Navigatie rond 1 obstakel |
+| 07 | Multiple obstacles | Meerdere obstakels, complexe navigatie |
+| 08 | BFS pathfinding | Breadth-First Search voor optimale routes |
+| 09 | Time-based soiling | `step_time()`, 7-dagen vuil-cyclus |
+| 10 | Multi-pass cleaning | Clean → wait → clean again |
+| 11 | Full solution | Alle features samen |
 
 ---
 
 ## 🧪 Testen
 
-### Testgroepen
+### Punten per week
 
-| Bestand | Focus | Tests | Punten |
-|---|---|---|---|
-| `tests/test1.py` | Basis schoonmaak (lege kamer) | 5 | 7 |
-| `tests/test2.py` | Obstakel detectie & navigatie | 4 | 7 |
-| `tests/test3.py` | Tijdsgebonden terugvuiling (7 dagen) | 5 | 8 |
-| **Totaal** | | **14** | **22** |
-
-### Punten toekennen aan testen
-
-Elk testbestand heeft een `WEIGHTS` dictionary bovenaan. Pas deze aan om het aantal punten per test te wijzigen:
+Elk testbestand heeft een `WEIGHTS` dictionary bovenaan. Pas deze aan om het
+aantal punten per test te wijzigen:
 
 ```python
-# tests/test1.py
+# week03/test_week03.py
 WEIGHTS = {
-    "test_agent_initialization": 1,
-    "test_single_tile_clean": 1,
-    "test_move_right": 1,
-    "test_move_blocked_by_wall": 1,
-    "test_clean_entire_room": 3,
+    "test_env_clean_single_tile": 1,
+    "test_agent_sense_dirt": 1,
+    "test_agent_clean_tile": 1,
+    "test_env_set_charger": 1,
 }
 ```
 
 ### Lokaal testen
 
 ```bash
-# Alle testen
-uv run python -m pytest tests/ -v
+# Alle testen (alle weken)
+uv run python -m pytest week*/test_week*.py -v
 
-# Eén testbestand
-uv run python -m pytest tests/test1.py -v
+# Eén week
+uv run python -m pytest week03/test_week03.py -v
 
 # Eén specifieke test
-uv run python -m pytest tests/test1.py::test_move_right -v
+uv run python -m pytest week03/test_week03.py::test_agent_clean_tile -v
 ```
 
 ### Score berekenen
 
 ```bash
-# Basis (toont totaal per bestand + eindscore)
+# Basis (toont per-week overzicht + eindscore)
 uv run python grade.py
 
-# Gedetailleerd (toont elke test + status)
+# Gedetailleerd (toont elke test per week + status)
 uv run python grade.py --verbose
+```
+
+**Voorbeeld output:**
+
+```
+========================================================================
+  FLOOR CLEANING AGENT — WEEKLY PROGRESS REPORT
+========================================================================
+
+  WEEK          SCORE       PROGRESS
+  ─────────────────────────────────────────────────────
+  week01     5/5  pts  ████████████████████ 100.0%
+  week02     4/6  pts  █████████████░░░░░░░  66.7%
+  ...
+
+  ─────────────────────────────────────────────────────
+  TOTAAL    35/59 pts  ████████████░░░░░░░░  59.3%
+──────────────────────────────────────────────────────────
+  EINDCIFER:   35 / 59  (59.3%)
+========================================================================
 ```
 
 ---
 
 ## 🤖 GitHub Actions Workflow
 
-Bij elke `push` of `pull_request` worden 4 jobs gestart:
+Bij elke `push` of `pull_request` worden **12 jobs** gestart:
 
 ```
-test1  ✅  pytest tests/test1.py  (7 pt)
-test2  ✅  pytest tests/test2.py  (7 pt)
-test3  ✅  pytest tests/test3.py  (8 pt)
-Score  ✅  grade.py               (22/22 = 100%)
+test01  ✅  pytest week01/test_week01.py  (5 pt)
+test02  ✅  pytest week02/test_week02.py  (6 pt)
+test03  ✅  pytest week03/test_week03.py  (4 pt)
+...
+test11  ✅  pytest week11/test_week11.py  (9 pt)
+Score   ✅  grade.py --verbose            (35/59 = 59.3%)
 ```
 
-**Belangrijk:** `fail-fast: false` — als één testgroep faalt, blijven de andere gewoon lopen.
+**Belangrijk:** `fail-fast: false` — als één week faalt, blijven de andere gewoon lopen.
 De **Score** job start pas nadat alle testjobs klaar zijn (`needs: test`) en berekent
-de gewogen score. Het resultaat verschijnt in de **Summary** tab van de workflow run.
+de gewogen score. Het resultaat verschijnt in de **Summary** tab van de workflow run
+met een per-week progressieoverzicht.
 
 ---
 
@@ -169,9 +168,11 @@ de gewogen score. Het resultaat verschijnt in de **Summary** tab van de workflow
 uv venv
 uv pip install -r requirements.txt
 
-# 3. Voer de testen uit
-uv run python -m pytest tests/ -v
+# 3. Begin met week 01 — implementeer de stubs in week01/solution.py
+# 4. Test je implementatie
+uv run python -m pytest week01/test_week01.py -v
 
-# 4. Bereken de score
+# 5. Ga verder naar week 02, 03, ...
+# 6. Bereken de totale score
 uv run python grade.py --verbose
 ```
