@@ -12,7 +12,7 @@ Studentencode die crasht of infinite loopt wordt netjes afgehandeld.
 import contextlib
 import importlib
 import random
-import signal
+import threading
 
 import pytest
 
@@ -44,20 +44,28 @@ WEIGHTS = {
 
 @contextlib.contextmanager
 def time_limit(seconds: int = 5):
-    """Beperk de duur van een blok code (tegen infinite loops)."""
+    """Beperk de duur van een blok code (tegen infinite loops).
 
-    def handler(signum, frame):
-        raise TimeoutError(f"code duurde te lang (>{seconds}s)")
+    Gebruikt threading.Timer omdat SIGALRM niet werkt op Windows.
+    """
+    timeout_triggered = False
 
-    signal.signal(signal.SIGALRM, handler)
-    signal.alarm(seconds)
+    def _raise():
+        nonlocal timeout_triggered
+        timeout_triggered = True
+
+    timer = threading.Timer(seconds, _raise)
+    timer.start()
     try:
         yield
+        if timeout_triggered:
+            raise TimeoutError(f"code duurde te lang (>{seconds}s)")
     finally:
-        signal.alarm(0)
+        timer.cancel()
 
 
 # ---------------- Oefening 1: Insertion Sort ----------------
+
 
 def test_insertion_sort_basic():
     """Gewone lijsten worden gesorteerd van klein naar groot."""
@@ -92,6 +100,7 @@ def test_insertion_sort_random():
 
 
 # ---------------- Oefening 2: Floor Cleaning Agent ----------------
+
 
 def _maak_robot():
     """Maak een agent met de standaard kamer (10x5)."""
