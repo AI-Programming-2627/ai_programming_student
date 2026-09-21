@@ -1,8 +1,13 @@
-# Floor Cleaning Agent — Model-based Reflex Agent (11-Week Course)
+# AI programming (11-Week Course)
 
-Een robotstofzuiger die een 10×5 tegels grote woonkamer systematisch schoonmaakt.
+Een robotstofzuiger die een 10x5 tegels grote woonkamer systematisch schoonmaakt.
 De agent gebruikt een **model-based reflex architectuur**: hij bouwt een intern model
 van de omgeving op via sensoren (vuil-detectie, bumper) en werkt dit continu bij.
+
+## Bronnen
+
+* Hands-On Machine Learning – Aurélien Géron
+* Artificial Intelligence: A Modern Approach – Russell & Norvig
 
 ---
 
@@ -10,13 +15,13 @@ van de omgeving op via sensoren (vuil-detectie, bumper) en werkt dit continu bij
 
 ```
 .
-├── .github/workflows/autograde.yml   # CI/CD: 11 testjobs + score berekening
-├── grade.py                           # Score calculator (dynamisch, alle weken)
+├── .github/workflows/autograde.yml   # CI/CD: automatisch nakijken
+├── grade.py                           # Score calculator
 ├── requirements.txt                   # pytest
-├── README.md                          # Dit bestand
+├── README.md                          # Deze handleiding
 ├── exercises/
 │   ├── week01/                       # Week 1:  Environment + Agent init
-│   │   ├── solution.py              #   Placeholder — implementeer zelf
+│   │   ├── solution.py              #   Implementeer zelf
 │   │   └── test_week01.py           #   5 tests, 5 pt
 │   ├── week02/                       # Week 2:  Movement (4 richtingen + muren)
 │   │   ├── solution.py
@@ -54,125 +59,171 @@ Totaal: 44 tests, 59 punten
 
 ---
 
-## 🧠 Architectuur (per week opgebouwd)
+## 📋 Overzicht setup
 
-Elke week bouwt voort op de vorige. De `solution.py` in elke map bevat
-**stub-methoden** die jij moet implementeren. De bijbehorende `test_week*.py`
-testen of jouw implementatie correct is.
+In deze handleiding leer je stap voor stap:
 
-### Week-overzicht
-
-| Week | Focus | Wat je leert |
-|------|-------|-------------|
-| 01 | Environment + Agent init | Grid, dirty tiles, position tracking, model |
-| 02 | Movement | 4 richtingen, wall detection via bumper |
-| 03 | Cleaning | Dirt sensor, clean_tile(), model update |
-| 04 | Empty room sweep | Boustrophedon (zigzag) patroon |
-| 05 | Bumper sensor | Obstacle detection, model marking |
-| 06 | Single obstacle | Navigatie rond 1 obstakel |
-| 07 | Multiple obstacles | Meerdere obstakels, complexe navigatie |
-| 08 | BFS pathfinding | Breadth-First Search voor optimale routes |
-| 09 | Time-based soiling | `step_time()`, 7-dagen vuil-cyclus |
-| 10 | Multi-pass cleaning | Clean → wait → clean again |
-| 11 | Full solution | Alle features samen |
+1. Hoe je de repository **forkt** (eigen kopie maken)
+2. Hoe je **Git instelt op je Windows-machine**
+3. Hoe je de **devcontainer opent in VS Code**
+4. Hoe je **wijzigingen commit & pusht** naar je eigen fork
+5. Hoe je **updates binnenhaalt** van de hoofdbranch
 
 ---
 
-## 🧪 Testen
+## 1. Fork de repository
 
-### Punten per week
+Een **fork** is je persoonlijke kopie van de repo op GitHub.
+Je werkt in je eigen fork, maar kan later updates uit de originele repo (`upstream`) binnenhalen.
 
-Elk testbestand heeft een `WEIGHTS` dictionary bovenaan. Pas deze aan om het
-aantal punten per test te wijzigen:
+1. Ga naar de originele repository in je browser:
+   `https://github.com/AI-Programming-2627/ai_programming_student`
+2. Klik op **"Fork"** (rechtsboven).
+3. Kies je eigen GitHub-account als bestemming.
+4. Laat **"Copy the `main` branch only"** aangevinkt en klik **Create fork**.
 
-```python
-# week03/test_week03.py
-WEIGHTS = {
-    "test_env_clean_single_tile": 1,
-    "test_agent_sense_dirt": 1,
-    "test_agent_clean_tile": 1,
-    "test_env_set_charger": 1,
-}
+Je fork staat nu op:
+`https://github.com/<JOUW_GEBRUIKERSNAAM>/ai_programming_student`
+
+> **Waarom forken?** Je kan vrij pushen zonder de originele repo te verstoren.
+> Via `upstream` haal je later nieuwe oefeningen van de lector binnen.
+
+---
+
+## 2. Git installeren op je Windows-host
+
+```powershell
+winget install --id Git.Git -e
 ```
 
-### Lokaal testen
+Of download van https://git-scm.com/download/win (64-bit).
 
-```bash
-# Alle testen (alle weken)
-uv run python -m pytest exercises/week*/test_week*.py -v
+**Check:** `git --version` moet `2.4x.x.windows.1` tonen.
 
-# Eén week
-uv run python -m pytest exercises/week03/test_week03.py -v
+---
 
-# Eén specifieke test
-uv run python -m pytest exercises/week03/test_week03.py::test_agent_clean_tile -v
-```
+## 3. Git configureren
 
-### Score berekenen
+Stel je naam en e-mail in **op Windows** (de devcontainer neemt dit over):
 
-```bash
-# Basis (toont per-week overzicht + eindscore)
-uv run python grade.py
-
-# Gedetailleerd (toont elke test per week + status)
-uv run python grade.py --verbose
-```
-
-**Voorbeeld output:**
-
-```
-========================================================================
-  FLOOR CLEANING AGENT — WEEKLY PROGRESS REPORT
-========================================================================
-
-  WEEK          SCORE       PROGRESS
-  ─────────────────────────────────────────────────────
-  week01     5/5  pts  ████████████████████ 100.0%
-  week02     4/6  pts  █████████████░░░░░░░  66.7%
-  ...
-
-  ─────────────────────────────────────────────────────
-  TOTAAL    35/59 pts  ████████████░░░░░░░░  59.3%
-──────────────────────────────────────────────────────────
-  EINDCIFER:   35 / 59  (59.3%)
-========================================================================
+```powershell
+git config --global user.name "Jouw Naam"
+git config --global user.email "jouw.email@student.com"
 ```
 
 ---
 
-## 🤖 GitHub Actions Workflow
+## 4. Authenticatie (eenmalig)
 
-Bij elke `push` of `pull_request` worden **12 jobs** gestart:
+Kies een van deze methodes:
 
-```
-test01  ✅  pytest exercises/week01/test_week01.py  (5 pt)
-test02  ✅  pytest exercises/week02/test_week02.py  (6 pt)
-test03  ✅  pytest exercises/week03/test_week03.py  (4 pt)
-...
-test11  ✅  pytest exercises/week11/test_week11.py  (9 pt)
-Score   ✅  grade.py --verbose            (35/59 = 59.3%)
+### A — GitHub CLI (aanbevolen)
+
+```powershell
+winget install --id GitHub.cli -e
+gh auth login
 ```
 
-**Belangrijk:** `fail-fast: false` — als één week faalt, blijven de andere gewoon lopen.
-De **Score** job start pas nadat alle testjobs klaar zijn (`needs: test`) en berekent
-de gewogen score. Het resultaat verschijnt in de **Summary** tab van de workflow run
-met een per-week progressieoverzicht.
+Kies: **GitHub.com** > **HTTPS** > **Yes** > log in via browser.
+
+### B — SSH-key
+
+```powershell
+type C:\Users\%USERNAME%\.ssh\id_ed25519.pub
+```
+
+Voeg de output toe op https://github.com/settings/ssh/new
+
+### C — Personal Access Token
+
+Maak een token aan op https://github.com/settings/tokens (klassiek, scopes: `repo`).
+Bewaar het:
+
+```powershell
+git config --global credential.helper wincred
+```
+
+Bij de eerste push plak je het token.
 
 ---
 
-## 🚀 Snelstart
+## 5. Devcontainer openen
+
+Clone **je fork** en open in VS Code:
+
+```powershell
+git clone https://github.com/<JOUW_GEBRUIKERSNAAM>/AI_Prog_student.git
+cd AI_Prog_student
+code .
+```
+
+VS Code vraagt: **"Reopen in Container?"** → klik **Reopen**.
+(Of `F1` → **"Reopen in Container"**)
+
+De container:
+- ✅ Trekt `ghcr.io/astral-sh/uv:python3.13-trixie` binnen
+- ✅ Installeert Git
+- ✅ Voert `uv sync` uit (Python packages)
+- ✅ Gebruikt jouw Git-credentials van de host
+
+
+
+---
+
+## 6. Werken met Git in de container
 
 ```bash
-# 1. Installeer uv (zie https://docs.astral.sh/uv/)
-# 2. Maak een virtual environment en installeer dependencies
-uv venv
-uv pip install -r requirements.txt
-
-# 3. Begin met week 01 — implementeer de stubs in exercises/week01/solution.py
-# 4. Test je implementatie
-uv run python -m pytest exercises/week01/test_week01.py -v
-
-# 5. Ga verder naar week 02, 03, ...
-# 6. Bereken de totale score
-uv run python grade.py --verbose
+git add .
+git commit -m "Beschrijving van wat je veranderd hebt"
+git push origin main
 ```
+
+Je kan ook de VS Code Git UI gebruiken: Source Control-icoon (`Ctrl+Shift+G`).
+
+---
+
+## 7. Updates van de lector binnenhalen
+
+**Eenmalig** — voeg de originele repo toe:
+
+```bash
+git remote add upstream https://github.com/brunohermanap/AI_Prog_student.git
+```
+
+**Periodiek** — haal nieuwe oefeningen binnen:
+
+```bash
+git fetch upstream
+git checkout main
+git merge upstream/main
+git push origin main
+```
+
+Doe dit voor elke les zodat je altijd de laatste versie hebt.
+
+---
+
+## 8. Flow-overzicht
+
+```
+1. Fork de originele repo op GitHub
+2. Clone JOUW fork lokaal
+3. Open folder in VS Code
+4. VS Code: "Reopen in Container"
+5. Werk aan oefeningen
+6. git add / git commit / git push
+7. (Periodiek) git merge upstream/main
+```
+
+---
+
+## 9. Problemen oplossen
+
+| Probleem | Oplossing |
+|---|---|
+| `git: not found` in container | `F1` → **"Rebuild Container"** |
+| `Permission denied (publickey)` | SSH-key toevoegen aan GitHub (stap 4) |
+| `could not read Username` | `gh auth login` op **host** (niet in container) |
+| Geen "Reopen" prompt | `F1` → **"Reopen in Container"** |
+| Wijzigingen niet zichtbaar | Source Control (`Ctrl+Shift+G`) → bestanden **stage**-en |
+
