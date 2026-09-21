@@ -221,3 +221,13 @@ __marimo__/
 
 # solutions
 *solution*.py
+
+# teacher-only readme
+README-hidden.md
+
+/.clinerules/
+context/
+
+# expliciet negeren
+harness/
+improvements.md
