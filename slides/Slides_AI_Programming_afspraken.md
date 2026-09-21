@@ -9,7 +9,7 @@ paginate: true
 # AI Programming
 ## Bruno Herman
 
-Academiejaar 2024-2025, traject 2AI
+Academiejaar 2026-2027, traject 2AI
 
 ---
 
@@ -53,7 +53,6 @@ Academiejaar 2024-2025, traject 2AI
 • Deze labos maak je in de les, en je mag hiervoor geen
 AI-tools zoals ChatGPT gebruiken.
 • Dit is telkens een specifiek vraagstuk oplossen mbv technieken besproken in de les, of een specifiek algoritme correct implementeren.
-• De beste 2 van de 3 scores worden in rekening genomen.
 
 ---
 
@@ -73,13 +72,11 @@ AI-tools zoals ChatGPT gebruiken.
 
 ## Aanbevolen lectuur
 
-Hands-on Machine Learning –
-Aurélien Géron
-Artificial Intelligence: a Modern
-Approach – Stuart Russell &
-Peter Norvig
-Gödel, Escher, Bach: an eternal golden braid – Douglas
-R. Hofstadter
+- Hands-on Machine Learning – Aurélien Géron
+- Artificial Intelligence: a Modern Approach – Stuart Russell & Peter Norvig
+- Gödel, Escher, Bach: an eternal golden braid – Douglas R. Hofstadter
+
+
 Deze cursus is sterk gebaseerd op het tweede standaardwerk. De eerste is eerder praktisch, de tweede theoretisch, met adaptaties
 Het derde boek geeft een diep inzicht in AI, is eerder filosofisch
 De boeken worden aanbevolen als naslagwerk, je hebt ze NIET nodig om deze cursus te volgen
