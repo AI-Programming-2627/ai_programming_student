@@ -108,18 +108,3 @@ def utility(huidige_stad, nieuwe_stad):
     return -afstand(huidige_stad, nieuwe_stad)
 ```
 
----
-
-## AI Geschiedenis
-
-| Jaar | Gebeurtenis |
-|------|-------------|
-| 1950 | Turing Test |
-| 1956 | Term 'AI' (Dartmouth) |
-| 1966 | ELIZA: eerste chatbot |
-| 1970s | Eerste AI Winter |
-| 1997 | Deep Blue verslaat Kasparov |
-| 2006 | Google Translate |
-| 2011 | SIRI, Watson wint Jeopardy! |
-| 2017 | AlphaGo verslaat Sedol Lee |
-| 2022 | ChatGPT |

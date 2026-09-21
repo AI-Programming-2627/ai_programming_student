@@ -17,8 +17,8 @@ import threading
 import numpy as np
 import pytest
 
-TAXI_PATH = "exercises_ai_assisted.week10.qlearning_taxi_start"
-CARTPOLE_PATH = "exercises_ai_assisted.week10.qlearning_cartpole_start"
+TAXI_PATH = "exercises.week10.qlearning_taxi_start"
+CARTPOLE_PATH = "exercises.week10.qlearning_cartpole_start"
 
 try:
     _taxi_mod = importlib.import_module(TAXI_PATH)

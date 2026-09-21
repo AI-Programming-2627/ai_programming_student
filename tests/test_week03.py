@@ -11,8 +11,8 @@ import threading
 
 import pytest
 
-MAZE_MODULE_PATH = "exercises_ai_assisted.week03.maze_start"
-DIJKSTRA_MODULE_PATH = "exercises_ai_assisted.week03.dijkstra_start"
+MAZE_MODULE_PATH = "exercises.week03.maze_start"
+DIJKSTRA_MODULE_PATH = "exercises.week03.dijkstra_start"
 
 # Importeer de maze-module
 try:

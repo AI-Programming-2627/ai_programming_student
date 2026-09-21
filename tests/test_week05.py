@@ -16,8 +16,8 @@ import threading
 
 import pytest
 
-MODULE_WORD = "exercises_ai_assisted.week05.word_generator_start"
-MODULE_KNAPSACK = "exercises_ai_assisted.week05.knapsack_start"
+MODULE_WORD = "exercises.week05.word_generator_start"
+MODULE_KNAPSACK = "exercises.week05.knapsack_start"
 
 # ---------- veilige import van WordPuzzle ----------
 try:

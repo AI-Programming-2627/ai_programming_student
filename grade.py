@@ -22,12 +22,12 @@ def discover_weeks():
 
     Returns a list of (week_label, test_file_path, weights_dict) sorted by week number.
     """
-    test_files = sorted(glob.glob("exercises/week*/test_week*.py"))
+    test_files = sorted(glob.glob("tests/test_week*.py"))
     weeks = []
 
     for test_path in test_files:
-        # Extract week label from path, e.g. "week01/test_week01.py" -> "week01"
-        week_label = Path(test_path).parent.name
+        # Extract week label from filename, e.g. "test_week01.py" -> "week01"
+        week_label = Path(test_path).stem.replace("test_", "")
 
         # Import weights dynamically
         module_name = test_path.replace(os.sep, ".").replace(".py", "")
@@ -45,7 +45,7 @@ def run_tests(junit_xml_path=".pytest_grades.xml"):
     """Run all tests with JUnit XML output and return the exit code."""
     import pytest
 
-    test_files = sorted(glob.glob("exercises/week*/test_week*.py"))
+    test_files = sorted(glob.glob("tests/test_week*.py"))
     args = ["-v", "--tb=short", f"--junitxml={junit_xml_path}"] + test_files
     return pytest.main(args)
 

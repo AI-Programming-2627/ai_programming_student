@@ -41,7 +41,7 @@ jobs:
 
       - name: Run tests (week ${{ matrix.id }})
         run: |
-          uv run python -m pytest -v exercises/week$(printf "%02d" ${{ matrix.id }})/test_week$(printf "%02d" ${{ matrix.id }}).py
+          uv run python -m pytest -v tests/test_week$(printf "%02d" ${{ matrix.id }}).py
 
   grade:
     name: Score

@@ -19,42 +19,44 @@ van de omgeving op via sensoren (vuil-detectie, bumper) en werkt dit continu bij
 ├── grade.py                           # Score calculator
 ├── requirements.txt                   # pytest
 ├── README.md                          # Deze handleiding
-├── exercises/
-│   ├── week01/                       # Week 1:  Environment + Agent init
-│   │   ├── solution.py              #   Implementeer zelf
-│   │   └── test_week01.py           #   5 tests, 5 pt
-│   ├── week02/                       # Week 2:  Movement (4 richtingen + muren)
-│   │   ├── solution.py
-│   │   └── test_week02.py           #   6 tests, 6 pt
-│   ├── week03/                       # Week 3:  Cleaning (dirt sensor, clean_tile)
-│   │   ├── solution.py
-│   │   └── test_week03.py           #   4 tests, 4 pt
-│   ├── week04/                       # Week 4:  Empty room sweep (zigzag)
-│   │   ├── solution.py
-│   │   └── test_week04.py           #   4 tests, 5 pt
-│   ├── week05/                       # Week 5:  Bumper sensor + obstacle model
-│   │   ├── solution.py
-│   │   └── test_week05.py           #   4 tests, 4 pt
-│   ├── week06/                       # Week 6:  Navigate around single obstacle
-│   │   ├── solution.py
-│   │   └── test_week06.py           #   3 tests, 4 pt
-│   ├── week07/                       # Week 7:  Multiple obstacles
-│   │   ├── solution.py
-│   │   └── test_week07.py           #   4 tests, 5 pt
-│   ├── week08/                       # Week 8:  BFS pathfinding
-│   │   ├── solution.py
-│   │   └── test_week08.py           #   3 tests, 5 pt
-│   ├── week09/                       # Week 9:  Time-based soiling (step_time)
-│   │   ├── solution.py
-│   │   └── test_week09.py           #   4 tests, 6 pt
-│   ├── week10/                       # Week 10: Multi-pass cleaning
-│   │   ├── solution.py
-│   │   └── test_week10.py           #   4 tests, 6 pt
-│   └── week11/                       # Week 11: Full solution (alles gecombineerd)
-│       ├── solution.py
-│       └── test_week11.py           #   3 tests, 9 pt
+├── tests/
+│   ├── test_week01.py               # Week 1:  Insertion Sort + Floor Cleaning Agent
+│   ├── test_week02.py               # Week 2:  Self-Driving Car, BFS, Sliding Puzzle
+│   ├── test_week03.py               # Week 3:  Maze + Dijkstra
+│   ├── test_week04.py               # Week 4:  TSP Simulated Annealing
+│   ├── test_week05.py               # Week 5:  Word Generator (GA) + Knapsack
+│   ├── test_week06.py               # Week 6:  TicTacToe (Minimax/Alpha-Beta)
+│   ├── test_week07.py               # Week 7:  Othello (Minimax)
+│   ├── test_week08.py               # Week 8:  Portfolio Optimization (OSQP)
+│   ├── test_week09.py               # Week 9:  Explore vs Exploit (Gittins)
+│   ├── test_week10.py               # Week 10: Q-learning (Taxi, CartPole)
+│   ├── test_week11.py               # Week 11: Tool-using agents
+│   └── __init__.py
 │
-Totaal: 44 tests, 59 punten
+├── exercises/
+│   ├── week01/                       # Week 1 exercises
+│   │   └── solution.py
+│   ├── week02/                       # Week 2 exercises
+│   │   └── solution.py
+│   ├── week03/                       # Week 3 exercises
+│   │   └── solution.py
+│   ├── week04/                       # Week 4 exercises
+│   │   └── solution.py
+│   ├── week05/                       # Week 5 exercises
+│   │   └── solution.py
+│   ├── week06/                       # Week 6 exercises
+│   │   └── solution.py
+│   ├── week07/                       # Week 7 exercises
+│   │   └── solution.py
+│   ├── week08/                       # Week 8 exercises
+│   │   └── solution.py
+│   ├── week09/                       # Week 9 exercises
+│   │   └── solution.py
+│   ├── week10/                       # Week 10 exercises
+│   │   └── solution.py
+│   └── week11/                       # Week 11 exercises
+│       └── solution.py
+│
 ```
 
 ---

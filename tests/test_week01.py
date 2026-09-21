@@ -16,7 +16,7 @@ import threading
 
 import pytest
 
-MODULE_PATH = "exercises_ai_assisted.week01.solution"
+MODULE_PATH = "exercises.week01.solution"
 
 # Import van de studentcode in een beveiligde zone: als de import
 # crasht (syntaxfout, fout bij import-tijd, ...) skippen alle tests

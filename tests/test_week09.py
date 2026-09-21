@@ -17,8 +17,8 @@ import threading
 import numpy as np
 import pytest
 
-EPSILON_PATH = "exercises_ai_assisted.week09.epsilon_greedy_start"
-GITTINS_PATH = "exercises_ai_assisted.week09.gittins_start"
+EPSILON_PATH = "exercises.week09.epsilon_greedy_start"
+GITTINS_PATH = "exercises.week09.gittins_start"
 
 try:
     _eps_mod = importlib.import_module(EPSILON_PATH)

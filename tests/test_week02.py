@@ -15,7 +15,7 @@ import threading
 
 import pytest
 
-MODULE_PATH = "exercises_ai_assisted.week02.solution"
+MODULE_PATH = "exercises.week02.solution"
 
 try:
     _mod = importlib.import_module(MODULE_PATH)
