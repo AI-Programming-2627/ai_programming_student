@@ -1,9 +1,5 @@
 # AI programming (11-Week Course)
 
-Een robotstofzuiger die een 10x5 tegels grote woonkamer systematisch schoonmaakt.
-De agent gebruikt een **model-based reflex architectuur**: hij bouwt een intern model
-van de omgeving op via sensoren (vuil-detectie, bumper) en werkt dit continu bij.
-
 ## Bronnen
 
 * Hands-On Machine Learning – Aurélien Géron
