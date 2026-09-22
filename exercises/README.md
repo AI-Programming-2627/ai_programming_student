@@ -26,7 +26,7 @@ Je kunt alle tests en de scoreberekening lokaal uitvoeren — de GitHub Actions-
 uv run python -m pytest -v tests/test_week01.py
 ```
 
-Vervang `week01` door een andere week (`week02`…`week11`).
+Vervang `week01` door een andere week (`week02`…`week11`). **Opgelet**, je oplossing moet de naam hebben zoals die in de `/tests` folder is gedefinieerd. Als je een andere naam gebruikt, kan je ook de naam bovenaan in de testfile aanpassen.
 
 ### Handige pytest-vlaggen
 
