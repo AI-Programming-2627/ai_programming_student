@@ -1,5 +1,7 @@
 # AI programming (11-Week Course)
 
+Oefeningen en notas voor het vak **AI programming (AP, 2e jaar)**.
+
 ## Bronnen
 
 * Hands-On Machine Learning – Aurélien Géron
@@ -150,8 +152,8 @@ Bij de eerste push plak je het token.
 Clone **je fork** en open in VS Code:
 
 ```powershell
-git clone https://github.com/<JOUW_GEBRUIKERSNAAM>/AI_Prog_student.git
-cd AI_Prog_student
+git clone https://github.com/<JOUW_GEBRUIKERSNAAM>/ai_programming_student.git
+cd ai_programming_student
 code .
 ```
 
@@ -162,7 +164,6 @@ De container:
 - ✅ Trekt `ghcr.io/astral-sh/uv:python3.13-trixie` binnen
 - ✅ Installeert Git
 - ✅ Voert `uv sync` uit (Python packages)
-- ✅ Gebruikt jouw Git-credentials van de host
 
 
 
@@ -199,23 +200,10 @@ git push origin main
 
 Doe dit voor elke les zodat je altijd de laatste versie hebt.
 
----
-
-## 8. Flow-overzicht
-
-```
-1. Fork de originele repo op GitHub
-2. Clone JOUW fork lokaal
-3. Open folder in VS Code
-4. VS Code: "Reopen in Container"
-5. Werk aan oefeningen
-6. git add / git commit / git push
-7. (Periodiek) git merge upstream/main
-```
 
 ---
 
-## 9. Problemen oplossen
+## 8. Problemen oplossen
 
 | Probleem | Oplossing |
 |---|---|
