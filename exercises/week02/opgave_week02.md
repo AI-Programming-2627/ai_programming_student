@@ -4,8 +4,6 @@
 - Je implementeert een **model-based reflex agent** (self-driving car).
 - Je gaat om met **foutieve sensoren** met redundante sensoren en interne state.
 - Je implementeert een **utility-based agent** (greedy routeplanner).
-- Je implementeert **Breadth-First Search** met pad-printing.
-- Je lost een **sliding puzzle** op met BFS/DFS.
 
 ## Overzicht
 
@@ -14,8 +12,6 @@
 | 1 | Self-Driving Car (reflex agent) | 30 min |
 | 2 | Foute sensor: Boeing 737 MAX | 30 min |
 | 3 | Routeplanner (utility-based agent) | 30 min |
-| 4 | Breadth-First Search | 30 min |
-| 5 | Sliding Puzzle | 45 min |
 
 ---
 
@@ -38,7 +34,7 @@ Welke variabele(n) moet de agent onthouden? Voeg ze toe in de constructor.
 
 ### Stap 3: Implementeer `process(p)`
 - Lees `p.DistanceTo` uit de LIDAR.
-- Bereken snelheid = vorige_afstand - huidige_afstand (positief = voorligger rijdt weg, negatief = voorligger komt dichter).
+- Bereken snelheid = vorige_afstand - huidige_afstand (negatief = voorligger rijdt weg, positief = voorligger komt dichter).
 - Schat tijd tot botsing: als snelheid != 0, dan `tijd = afstand / snelheid`.
 - Als tijd < 5 seconden: `return Brake()`, anders `return Nothing()`.
 - Update de opgeslagen afstand.
@@ -62,13 +58,13 @@ Vul voor deze agent de PEAS-tabel in. Wat is de performance measure? Wat kan de 
 Geef de metingen van beide sensoren terug als tuple.
 
 ### Stap 3: Plausibiliteitscheck in `process(p)`
-- Zijn beide sensoren het **bij benader** eens (verschil < `TOLERANCE`)? -> gebruik het gemiddelde.
-- Lopen ze **duidelijk uiteen**? -> dan is er iets mis. Gebruik het `sensor_model`: vertrouw de sensor die **consistent** is met de vorige waarde (interne state!).
+- Zijn beide sensoren het **bij benadering** eens (verschil < `TOLERANCE`)? -> gebruik het gemiddelde.
+- Lopen ze **duidelijk uiteen**? -> dan is er iets mis. Gebruik het `sensor_model`: vertrouw de sensor die **consistent** is met de vorige waarde (interne state!). Tip: het dichtste bij kun je best implementeren met `abs`, de absolute waarde functie.
 - Onthoud in de interne state welke sensor als verdacht geldt. Vanaf dan vertrouw je de andere sensor.
 
 ### Stap 4: Beslissing
-- Als de betrouwbare hoogtemeter een dalende trend toont terwijl de autothrottle actief is: `return Correct()`.
-- Anders: `return Nothing()`.
+- Als de betrouwbare hoogtemeter een dalende trend tot die niet te sterk is: `return Correct()`. Er mag maximum 10 meter gedaald worden tussen metingen.
+- Anders: `return Nothing()`. 
 
 ### Stap 5: Test met de meegeleverde reeks
 De reeks in `__main__` bevat een moment waarop sensor A stuk gaat. Controleer of de agent correct blijft doorvliegen op sensor B. Wat gebeurt er als je de plausibiliteitscheck weglaat?
@@ -109,64 +105,3 @@ Komt de agent aan in Parijs? Waarom is greedy **niet altijd optimaal**? Teken de
 - Wat zou een *goal-based* agent anders doen? (Welke stap in het plan verandert er?)
 - Waarom is dit geen vervanging voor Dijkstra? (week 3!)
 
----
-
-# Oefening 4: Breadth-First Search
-
-Open `breadth_first_start.py`. Het bestand bevat de klassen `State`, `Node` en een `breadth_first_search(initial_node, goal_state)` functie-skelet.
-
-## Stappenplan
-
-### Stap 1: Begrijp BFS
-BFS onderzoekt de graaf **niveau per niveau** met een **queue** (FIFO).
-
-Algorithm:
-1. Start met `initial_node` in de **frontier** (queue).
-2. Hou een set `explored` bij van bezochte nodes.
-3. Zolang de frontier niet leeg is:
-   - Pop de **voorste** node uit de queue.
-   - Check of dit de goal is → zo ja, return.
-   - Voeg anders deze node toe aan `explored`.
-   - Voeg alle **niet-bezochte** kinderen toe aan de **achterkant** van de queue.
-
-### Stap 2: Implementeer BFS
-Gebruik `from collections import deque` voor een efficiënte queue.
-
-### Stap 3: Backward printing (Uitbreiding)
-Zorg dat het pad van start tot goal wordt **teruggeprint**.  
-*Hint:* bewaar bij elke node ook de **parent** (vanwaar je kwam), zodat je achteraf het pad kunt reconstrueren.
-
-<details>
-<summary><b>🔎 Hint parent-tracking</b></summary>
-Je kan een dictionary `parent = {}` bijhouden. Bij elk bezoek: `parent[child_node] = current_node`.  
-Na de search loop je van goal terug naar start via parent-links.
-</details>
-
----
-
-# Oefening 5: Sliding Puzzle
-
-Open `sliding_puzzle_start.py`. Het bevat een `SlidingPuzzle`-klasse.
-
-## Stappenplan
-
-### Stap 1: Begrijp het probleem
-Een 8-puzzle (3×3 grid) heeft getallen 1-8 en een leeg vakje (0).  
-Je kan het lege vakje verschuiven (omhoog, omlaag, links, rechts).  
-Doel: bereik de opgeloste configuratie `[[1,2,3],[4,5,6],[7,8,0]]`.
-
-### Stap 2: Implementeer `possible_new_configurations()`
-Geef een lijst van nieuwe `SlidingPuzzle`-objecten na elke mogelijke zet.
-
-### Stap 3: Implementeer `cost()` (heuristiek)
-Gebruik de **Manhattan-distance**:
-`cost = som over alle tegels van |rij_doel - rij_huidig| + |kol_doel - kol_huidig|`
-
-### Stap 4: Los de puzzel op met BFS
-Schrijf een functie `solve_puzzle(start_puzzle)` die BFS gebruikt.  
-Gebruik de `possible_new_configurations()` om de volgende states te genereren.
-
-### Stap 5: Test met de voorbeeldpuzzel uit `__main__`.
-
-## Klaar?
-- Commit je werk. Als je tijd hebt, kijk al naar **week 3** (maze DFS, Dijkstra).

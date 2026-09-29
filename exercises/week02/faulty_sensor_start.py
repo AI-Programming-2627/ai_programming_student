@@ -50,7 +50,8 @@ class FaultTolerantAgent:
 
     def read_all(self, p: Reading) -> tuple[float, float]:
         """Sensors: geef beide metingen terug."""
-        return p.sensor_a, p.sensor_b
+        # TODO
+        pass
 
     def reliable_value(self, a: float, b: float, previous: Optional[float]) -> float:
         """Sensor model: bepaal de meest betrouwbare hoogtemeting.
