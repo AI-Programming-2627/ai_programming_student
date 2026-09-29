@@ -186,7 +186,7 @@ Je kan ook de VS Code Git UI gebruiken: Source Control-icoon (`Ctrl+Shift+G`).
 **Eenmalig** — voeg de originele repo toe:
 
 ```bash
-git remote add upstream https://github.com/AI_Programming-2627/ai_programming_student.git
+git remote add upstream https://github.com/AI-Programming-2627/ai_programming_student.git
 ```
 
 **Periodiek** — haal nieuwe oefeningen binnen:
