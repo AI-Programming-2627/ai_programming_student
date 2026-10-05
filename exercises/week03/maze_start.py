@@ -1,5 +1,5 @@
 """
-Oefening 1: Maze met DFS
+Oefening 3: Maze met DFS
 =========================
 Implementeer DFS om een weg door het maze te vinden.
 """

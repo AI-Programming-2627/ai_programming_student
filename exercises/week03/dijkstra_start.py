@@ -1,5 +1,5 @@
 """
-Oefening 2: Dijkstra
+Oefening 4: Dijkstra
 =====================
 Implementeer Dijkstra voor kortste pad in een gewogen graaf.
 """

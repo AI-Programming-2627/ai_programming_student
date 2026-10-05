@@ -11,8 +11,8 @@ import threading
 
 import pytest
 
-MAZE_MODULE_PATH = "exercises.week03.maze_start"
-DIJKSTRA_MODULE_PATH = "exercises.week03.dijkstra_start"
+MAZE_MODULE_PATH = "exercises.week03.solution"
+DIJKSTRA_MODULE_PATH = "exercises.week03.solution"
 
 # Importeer de maze-module
 try:
@@ -34,6 +34,19 @@ try:
     Path = _dijk_mod.Path
 except Exception as e:
     pytest.skip(f"dijkstra_start.py kon niet geïmporteerd worden: {e}",
+                allow_module_level=True)
+
+# Importeer de oplossing (BFS + sliding puzzle)
+try:
+    _sol_mod = importlib.import_module("exercises.week03.solution")
+    SlidingPuzzle = _sol_mod.SlidingPuzzle
+    solve_puzzle = _sol_mod.solve_puzzle
+    State = _sol_mod.State
+    Node = _sol_mod.Node
+    breadth_first_search = _sol_mod.breadth_first_search
+    print_path = _sol_mod.print_path
+except Exception as e:
+    pytest.skip(f"solution.py kon niet geïmporteerd worden: {e}",
                 allow_module_level=True)
 
 WEIGHTS = {
@@ -65,6 +78,130 @@ def time_limit(seconds: int = 5):
     finally:
         timer.cancel()
 
+
+# =============== Oefening 3: Sliding Puzzle ===============
+
+
+def _puzzle_from_list(values):
+    """Maak een SlidingPuzzle van een 2D lijst."""
+    return SlidingPuzzle(values)
+
+
+def test_sliding_possible_moves_center():
+    """Leeg vakje in het midden geeft 4 mogelijke configuraties."""
+    puzzle = _puzzle_from_list([
+        [1, 2, 3],
+        [4, 0, 5],
+        [6, 7, 8],
+    ])
+    with time_limit():
+        configs = puzzle.possible_new_configurations()
+    assert len(configs) == 4, "middenpositie moet 4 moves geven"
+
+
+def test_sliding_possible_moves_corner():
+    """Leeg vakje in de hoek geeft 2 mogelijke configuraties."""
+    puzzle = _puzzle_from_list([
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+    ])
+    with time_limit():
+        configs = puzzle.possible_new_configurations()
+    assert len(configs) == 2, "hoekpositie moet 2 moves geven"
+
+
+def test_sliding_possible_moves_edge():
+    """Leeg vakje aan de rand (niet hoek) geeft 3 mogelijke configuraties."""
+    puzzle = _puzzle_from_list([
+        [1, 0, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+    ])
+    with time_limit():
+        configs = puzzle.possible_new_configurations()
+    assert len(configs) == 3, "randpositie moet 3 moves geven"
+
+
+def test_sliding_manhattan_distance():
+    """Manhattan-afstand wordt correct berekend."""
+    # 1 stap van goal: leeg vakje (0) en 6 verwisseld
+    puzzle = _puzzle_from_list([
+        [1, 2, 3],
+        [4, 5, 0],
+        [7, 8, 6],
+    ])
+    with time_limit():
+        dist = puzzle.manhattan_distance()
+    # 6 staat op (2,2), hoort op (2,1) -> |2-2| + |2-1| = 1
+    assert dist == 1, f"verwacht 1, kreeg {dist}"
+
+    # goal zelf
+    goal_puzzle = _puzzle_from_list([
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 0],
+    ])
+    with time_limit():
+        dist = goal_puzzle.manhattan_distance()
+    assert dist == 0, "goal moet Manhattan-afstand 0 hebben"
+
+
+def test_sliding_is_goal():
+    """is_goal herkent de doelconfiguratie correct."""
+    goal = _puzzle_from_list([
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 0],
+    ])
+    assert goal.is_goal() is True, "goal moet True geven"
+
+    niet_goal = _puzzle_from_list([
+        [1, 2, 3],
+        [4, 5, 0],
+        [7, 8, 6],
+    ])
+    assert niet_goal.is_goal() is False, "niet-goal moet False geven"
+
+
+def test_sliding_solve_one_step():
+    """solve_puzzle lost een puzzel op die 1 zet van goal is."""
+    puzzle = _puzzle_from_list([
+        [1, 2, 3],
+        [4, 5, 0],
+        [7, 8, 6],
+    ])
+    with time_limit(10):
+        oplossing = solve_puzzle(puzzle)
+    assert oplossing is not None, "er moet een oplossing zijn"
+    assert len(oplossing) == 2, (
+        f"verwacht 2 configuraties (start + goal), kreeg {len(oplossing)}"
+    )
+    assert oplossing[-1].is_goal(), "laatste configuratie moet goal zijn"
+
+
+def test_sliding_solve_multiple_steps():
+    """solve_puzzle lost een puzzel op die meerdere zetten van goal is."""
+    puzzle = _puzzle_from_list([
+        [1, 2, 3],
+        [4, 0, 5],
+        [7, 8, 6],
+    ])
+    with time_limit(30):
+        oplossing = solve_puzzle(puzzle)
+    assert oplossing is not None, "er moet een oplossing zijn"
+    assert oplossing[-1].is_goal(), "laatste configuratie moet goal zijn"
+    # De lege plek moet verschoven zijn, minstens een paar stappen
+    assert len(oplossing) >= 3, "er zijn minstens 2 zetten nodig"
+
+
+def test_bfs_print_path():
+    """print_path geeft een nette string terug."""
+    pad = [State("A"), State("B"), State("C")]
+    with time_limit():
+        resultaat = print_path(pad)
+    assert isinstance(resultaat, str)
+    assert "A" in resultaat and "B" in resultaat and "C" in resultaat
 
 # ============================================================
 # Maze (DFS) tests
