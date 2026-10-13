@@ -17,18 +17,78 @@ class TSPSolver:
         self.cooling_rate = cooling_rate
         self.num_iterations = num_iterations
 
-    def total_distance(self, tour):
-        # TODO: bereken totale afstand van de tour (heen en terug)
-        pass
+    def total_distance(self, tour: list[int]) -> float:
+        """Bereken de totale afstand van een tour, inclusief terugkeer
+        naar de startstad.
 
-    def simulated_annealing(self):
-        # TODO: implementeer simulated annealing
-        # 1. genereeer starttour
-        # 2. loop over iteraties
-        # 3. verwissel 2 steden, bereken Δ
-        # 4. aanvaar beter of aanvaar slechter met kans exp(-Δ/T)
-        # 5. update temperatuur, onthoud beste
-        pass
+        Args:
+            tour: permutatie van steden (lijst van indices).
+
+        Returns:
+            De totale afstand: som van de afstanden tussen opeenvolgende
+            steden, plus de afstand van de laatste stad terug naar de eerste.
+        """
+        distance = 0.0
+        for i in range(len(tour) - 1):
+            distance += self.distance_matrix[tour[i]][tour[i + 1]]
+        distance += self.distance_matrix[tour[-1]][tour[0]]  # terug naar start
+        return distance
+
+    @staticmethod
+    def _canonical(tour: list[int]) -> list[int]:
+        """Draai de tour zodat stad 0 vooraan staat (richting blijft gelijk).
+
+        De totale afstand is invariant onder rotatie, dus dit verandert niets
+        aan de kwaliteit van de tour maar maakt het resultaat eenduidig.
+
+        Args:
+            tour: een geldige tour (permutatie van steden).
+
+        Returns:
+            Dezelfde tour als lijst, beginnend bij stad 0.
+        """
+        start = tour.index(0)
+        return tour[start:] + tour[:start]
+
+    def simulated_annealing(self) -> tuple[list[int], float]:
+        """Simulated annealing voor TSP.
+
+        Het algoritme start van de natuurlijke tour [0, 1, ..., n-1] en
+        zoekt stap voor stap verbeteringen: elke iteratie worden twee
+        willekeurige steden verwisseld. Een betere tour wordt altijd
+        aanvaard; een slechtere tour wordt aanvaard met kans
+        exp(-Δ / T), waarbij de temperatuur T exponential afkoelt.
+
+        Returns:
+            Een tuple (best_tour, best_distance): de beste gevonden tour
+            (beginnend bij stad 0) en de bijhorende totale afstand.
+        """
+        current_tour = list(range(self.num_cities))
+        current_distance = self.total_distance(current_tour)
+
+        best_tour = current_tour.copy()
+        best_distance = current_distance
+
+        temperature = self.initial_temperature
+
+        for _ in range(self.num_iterations):
+            i, j = random.sample(range(self.num_cities), 2)
+            new_tour = current_tour.copy()
+            new_tour[i], new_tour[j] = new_tour[j], new_tour[i]
+            new_distance = self.total_distance(new_tour)
+            delta = new_distance - current_distance
+
+            if delta < 0 or random.random() < math.exp(-delta / temperature):
+                current_tour = new_tour
+                current_distance = new_distance
+
+                if current_distance < best_distance:
+                    best_tour = current_tour.copy()
+                    best_distance = current_distance
+
+            temperature *= self.cooling_rate
+
+        return self._canonical(best_tour), best_distance
 
 
 if __name__ == "__main__":
