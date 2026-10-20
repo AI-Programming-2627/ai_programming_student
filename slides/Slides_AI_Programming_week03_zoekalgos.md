@@ -4,19 +4,6 @@ theme: ap-theme
 paginate: true
 ---
 
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('load', () => {
-    document.querySelectorAll('code.language-mermaid').forEach((el) => {
-      const div = document.createElement('div');
-      div.className = 'mermaid';
-      div.textContent = el.textContent;
-      (el.closest('pre, marp-pre') || el).replaceWith(div);
-    });
-    mermaid.run();
-  });
-</script>
-
 <!-- _class: title-slide -->
 
 # Zoekalgoritmes
