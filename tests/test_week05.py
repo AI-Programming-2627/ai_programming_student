@@ -4,7 +4,7 @@ Week 05 Autograder: Word Generator (GA) en Knapsack Probleem.
 Test de publieke interface van de oplossing van de student:
 - WordPuzzle: generate_phrase, calculate_fitness, generate_population,
   crossover, mutate, select_best, genetic_algorithm
-- knapsack_start: fitness_func
+- solution: fitness_func
 
 De tests controleren enkel gedrag, niet hoe het geimplementeerd is.
 Studentencode die crasht of infinite loopt wordt netjes afgehandeld.
@@ -16,8 +16,8 @@ import threading
 
 import pytest
 
-MODULE_WORD = "exercises.week05.word_generator_start"
-MODULE_KNAPSACK = "exercises.week05.knapsack_start"
+MODULE_WORD = "exercises.week05.solution"
+MODULE_KNAPSACK = "exercises.week05.solution"
 
 # ---------- veilige import van WordPuzzle ----------
 try:
@@ -25,7 +25,7 @@ try:
     WordPuzzle = _mod_word.WordPuzzle
 except Exception as import_error:
     pytest.skip(
-        f"word_generator_start.py kon niet geimporteerd worden: {import_error}",
+        f"solution.py kon niet geimporteerd worden: {import_error}",
         allow_module_level=True,
     )
 
@@ -39,7 +39,7 @@ try:
     n_voorwerpen = _mod_knap.n_voorwerpen
 except Exception as import_error:
     pytest.skip(
-        f"knapsack_start.py kon niet geimporteerd worden: {import_error}",
+        f"solution.py kon niet geimporteerd worden: {import_error}",
         allow_module_level=True,
     )
 
