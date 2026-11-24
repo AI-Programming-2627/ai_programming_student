@@ -4,6 +4,7 @@ version = "0.1.0"
 requires-python = ">=3.12,<3.14"
 dependencies = [
     "numpy>=1.25.2",
+    "osqp>=0.6.3",
     "pandas>=2.0.3",
     "scipy>=1.11.3",
     "matplotlib>=3.7.2",
@@ -20,4 +21,8 @@ dependencies = [
     "pytest>=8.0",
     "pytest-cov>=5.0",
     "gymnasium>=0.29",
+    "pygad>=3.9,<4",
 ]
+
+[tool.mypy]
+ignore_missing_imports = true
